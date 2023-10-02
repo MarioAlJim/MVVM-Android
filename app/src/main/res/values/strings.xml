@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BindingApp</string>
+    <string name="show_new_game">Show new Game</string>
+</resources>
