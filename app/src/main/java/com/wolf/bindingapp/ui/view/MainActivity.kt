@@ -1,11 +1,12 @@
-package com.wolf.bindingapp.view
+package com.wolf.bindingapp.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.wolf.bindingapp.databinding.ActivityMainBinding
-import com.wolf.bindingapp.viewModel.GameViewModel
+import com.wolf.bindingapp.ui.viewModel.GameViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,12 +18,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        gameViewModel.onCreate()
+
         initObservables()
         initListeners()
     }
 
     private fun initObservables() {
-        gameViewModel.gameModel.observe(this, Observer { game ->
+        gameViewModel.gameModel.observe(this ) { game ->
             binding.tvGameName.text = game.name
             binding.tvDevelopmentStudio.text = game.developmentStudio
 
@@ -32,7 +36,11 @@ class MainActivity : AppCompatActivity() {
                 packageName
             )
             binding.ivGame.setImageResource(gameImage)
-        })
+        }
+
+        gameViewModel.showLoader.observe(this) {
+            binding.progressBar.isVisible = it
+        }
     }
 
     private fun initListeners() {
